@@ -1,6 +1,6 @@
 {
     "name": "Dobby",
-    "clients": [],
+    "clients": ["telegram", "direct"],
     "modelProvider": "openai",
     "settings": {
         "voice": {
