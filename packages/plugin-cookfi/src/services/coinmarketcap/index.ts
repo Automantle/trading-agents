@@ -117,21 +117,25 @@ export class CoinmarketcapService {
                 }
 
                 responseTokenList.push(
-                    ...batch.map((token) => {
-                        const contractInfo = data.data[
-                            token.id.toString()
-                        ].contract_address.find(
-                            (contract) =>
-                                contract.platform.name === cmcChainName
-                        );
+                    ...batch
+                        .map((token) => {
+                            const contractInfo = data.data[
+                                token.id.toString()
+                            ].contract_address.find(
+                                (contract) =>
+                                    contract.platform.name === cmcChainName
+                            );
 
-                        return {
-                            symbol: contractInfo.platform.coin.symbol,
-                            name: contractInfo.platform.coin.name,
-                            address: contractInfo.contract_address,
-                            chainId,
-                        };
-                    })
+                            if (!contractInfo) return null;
+
+                            return {
+                                symbol: token.symbol,
+                                name: token.name,
+                                address: contractInfo.contract_address,
+                                chainId,
+                            };
+                        })
+                        .filter(Boolean)
                 );
 
                 await new Promise((resolve) => setTimeout(resolve, 500));
