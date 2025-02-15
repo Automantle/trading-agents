@@ -96,8 +96,6 @@ export class CoinmarketcapService {
         for (let i = 0; i < topTokens.length; i += batchSize) {
             const batch = topTokens.slice(i, i + batchSize);
 
-            console.log(batch);
-
             try {
                 // fetch the addresses for all the tokens
                 const { data } = await this.client.get<CMCTokenInfoResponse>(
@@ -122,9 +120,10 @@ export class CoinmarketcapService {
                     ...batch.map((token) => {
                         const contractInfo = data.data[
                             token.id.toString()
-                        ].contract_address.find((contract) => {
-                            contract.platform.name === cmcChainName;
-                        });
+                        ].contract_address.find(
+                            (contract) =>
+                                contract.platform.name === cmcChainName
+                        );
 
                         return {
                             symbol: contractInfo.platform.coin.symbol,
